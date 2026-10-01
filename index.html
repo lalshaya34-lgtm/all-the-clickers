@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duck Frog Owl Clicker</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+}
+
+header {
+    text-align: center;
+    padding: 22px;
+    background: #020617;
+    border-bottom: 2px solid #334155;
+}
+
+header h1 {
+    margin: 0 0 8px;
+}
+
+#saveStatus {
+    color: #86efac;
+    font-size: 14px;
+}
+
+.team-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+button {
+    border: 0;
+    border-radius: 12px;
+    padding: 11px 16px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .15s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.duck {
+    background: #facc15;
+    color: #422006;
+}
+
+.frog {
+    background: #4ade80;
+    color: #052e16;
+}
+
+.owl {
+    background: #a78bfa;
+    color: #2e1065;
+}
+
+.primary {
+    background: #6366f1;
+    color: white;
+}
+
+.danger {
+    background: #ef4444;
+    color: white;
+}
+
+.secondary {
+    background: #475569;
+    color: white;
+}
+
+.container {
+    max-width: 1150px;
+    margin: auto;
+    padding: 20px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: rgba(15,23,42,.95);
+    border: 1px solid #334155;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.click-area {
+    text-align: center;
+}
+
+.team-icon {
+    font-size: 110px;
+    margin: 15px;
+    user-select: none;
+}
+
+.click-button {
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    font-size: 27px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.35);
+}
+
+.currency {
+    font-size: 23px;
+    margin: 9px;
+}
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.tab {
+    background: #334155;
+    color: white;
+}
+
+.tab.active {
+    background: #6366f1;
+}
+
+.panel {
+    display: none;
+}
+
+.panel.active {
+    display: block;
+}
+
+.item {
+    background: #1e293b;
+    border: 1px solid #475569;
+    border-radius: 13px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.item h3 {
+    margin-top: 0;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #475569;
+    border-radius: 10px;
+    background: #020617;
+    color: white;
+    font-size: 15px;
+}
+
+.clan-header {
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 15px;
+}
+
+.clan-header h2 {
+    margin-top: 0;
+    font-size: 28px;
+}
+
+.clan-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.clan-stat {
+    background: rgba(0,0,0,.2);
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.progress {
+    width: 100%;
+    height: 15px;
+    background: #0f172a;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#facc15,#f97316);
+    transition: width .2s;
+}
+
+.member {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.role-owner {
+    color: #facc15;
+}
+
+.role-admin {
+    color: #60a5fa;
+}
+
+.role-member {
+    color: #cbd5e1;
+}
+
+.achievement {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    margin: 7px 0;
+    background: #0f172a;
+    border-radius: 10px;
+}
+
+.unlocked {
+    color: #4ade80;
+}
+
+.locked {
+    color: #64748b;
+}
+
+.notice {
+    padding: 13px;
+    border-radius: 10px;
+    background: #172554;
+    border: 1px solid #1d4ed8;
+    margin-bottom: 15px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #94a3b8;
+}
+
+@media(max-width:800px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .clan-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .click-button {
+        width: 180px;
+        height: 180px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🦆 🐸 🦉 Duck Frog Owl Clicker</h1>
+    <div id="saveStatus">💾 Saved</div>
+</header>
+
+<div class="team-selector">
+    <button class="duck" onclick="switchTeam('duck')">🦆 Duck Team</button>
+    <button class="frog" onclick="switchTeam('frog')">🐸 Frog Team</button>
+    <button class="owl" onclick="switchTeam('owl')">🦉 Owl Team</button>
+</div>
+
+<div class="container">
+
+<div class="dashboard">
+
+<section class="card click-area">
+
+    <h2 id="teamName">Duck Team</h2>
+
+    <div class="team-icon" id="teamIcon">🦆</div>
+
+    <div class="currency">
+        🪙 Coins: <span id="coins">0</span>
+    </div>
+
+    <div class="currency">
+        ⚡ Click Power: <span id="clickPower">1</span>
+    </div>
+
+    <button id="clickButton"
+            class="click-button duck"
+            onclick="clickAnimal()">
+        CLICK!
+    </button>
+
+</section>
+
+<section class="card">
+
+    <h2>👤 Player</h2>
+
+    <div class="item">
+        Level:
+        <strong id="level">1</strong>
+    </div>
+
+    <div class="item">
+        Total Clicks:
+        <strong id="totalClicks">0</strong>
+    </div>
+
+    <div class="item">
+        Team:
+        <strong id="currentTeam">Duck</strong>
+    </div>
+
+    <div class="item">
+        Clan:
+        <strong id="currentClan">No Clan</strong>
+    </div>
+
+</section>
+
+</div>
+
+<br>
+
+<section class="card">
+
+<div class="tabs">
+
+<button class="tab active"
+        onclick="openPanel('upgrades',this)">
+    ⬆️ Upgrades
+</button>
+
+<button class="tab"
+        onclick="openPanel('skins',this)">
+    🎨 Skins
+</button>
+
+<button class="tab"
+        onclick="openPanel('clans',this)">
+    🛡️ Clans
+</button>
+
+</div>
+
+<!-- UPGRADES -->
+
+<div id="upgrades" class="panel active">
+
+<h2>⬆️ Upgrades</h2>
+
+<div class="item">
+<h3>💪 Stronger Clicks</h3>
+<p>Increase your click power by 1.</p>
+
+<button class="primary"
+        onclick="buyUpgrade()">
+Upgrade — 25 Coins
+</button>
+</div>
+
+<div class="item">
+<h3>🤖 Auto Clicker</h3>
+<p>Automatically earns coins every second.</p>
+
+<button class="primary"
+        onclick="buyAutoClicker()">
+Buy — 100 Coins
+</button>
+</div>
+
+</div>
+
+<!-- SKINS -->
+
+<div id="skins" class="panel">
+
+<h2>🎨 Skins</h2>
+
+<div class="item">
+<p>Choose a skin for your current team.</p>
+
+<button class="secondary"
+        onclick="selectSkin('default')">
+⭐ Default
+</button>
+
+<button class="primary"
+        onclick="selectSkin('gold')">
+✨ Golden
+</button>
+
+<button class="primary"
+        onclick="selectSkin('rainbow')">
+🌈 Rainbow
+</button>
+
+</div>
+
+</div>
+
+<!-- CLANS -->
+
+<div id="clans" class="panel">
+
+<h2>🛡️ Clans</h2>
+
+<div id="clanContent"></div>
+
+</div>
+
+</section>
+
+</div>
+
+<footer>
+Duck Frog Owl Clicker • Local Clan System
+</footer>
+
+<script>
+
+/* =========================
+   GAME DATA
+========================= */
+
+const defaultTeam = () => ({
+    coins: 0,
+    clickPower: 1,
+    totalClicks: 0,
+    level: 1,
+    skin: "default",
+    autoClickers: 0
+});
+
+let game =
+JSON.parse(localStorage.getItem("duckFrogOwlSave"))
+|| {
+    currentTeam: "duck",
+
+    teams: {
+        duck: defaultTeam(),
+        frog: defaultTeam(),
+        owl: defaultTeam()
+    },
+
+    clan: null
+};
+
+const teamInfo = {
+
+    duck: {
+        name: "Duck Team",
+        icon: "🦆",
+        className: "duck"
+    },
+
+    frog: {
+        name: "Frog Team",
+        icon: "🐸",
+        className: "frog"
+    },
+
+    owl: {
+        name: "Owl Team",
+        icon: "🦉",
+        className: "owl"
+    }
+
+};
+
+
+/* =========================
+   TEAM SYSTEM
+========================= */
+
+function getTeam() {
+    return game.teams[game.currentTeam];
+}
+
+function switchTeam(team) {
+
+    game.currentTeam = team;
+
+    saveGame();
+    updateUI();
+}
+
+
+/* =========================
+   CLICKER
+========================= */
+
+function clickAnimal() {
+
+    const team = getTeam();
+
+    team.coins += team.clickPower;
+    team.totalClicks++;
+
+    checkPlayerLevel();
+
+    updateUI();
+}
+
+
+/* =========================
+   UPGRADES
+========================= */
+
+function buyUpgrade() {
+
+    const team = getTeam();
+
+    if (team.coins < 25) {
+        alert("You need 25 coins.");
+        return;
+    }
+
+    team.coins -= 25;
+    team.clickPower++;
+
+    updateUI();
+}
+
+function buyAutoClicker() {
+
+    const team = getTeam();
+
+    if (team.coins < 100) {
+        alert("You need 100 coins.");
+        return;
+    }
+
+    team.coins -= 100;
+    team.autoClickers++;
+
+    updateUI();
+}
+
+
+/* =========================
+   LEVELING
+========================= */
+
+function checkPlayerLevel() {
+
+    const team = getTeam();
+
+    const newLevel =
+        Math.floor(team.totalClicks / 100) + 1;
+
+    if (newLevel > team.level) {
+        team.level = newLevel;
+    }
+}
+
+
+/* =========================
+   SKINS
+========================= */
+
+function selectSkin(skin) {
+
+    getTeam().skin = skin;
+
+    saveGame();
+    updateUI();
+}
+
+
+/* =========================
+   CLAN SYSTEM
+========================= */
+
+/*
+Clan structure:
+
+{
+    name,
+    tag,
+    level,
+    xp,
+    coins,
+    members: [],
+    achievements: [],
+    upgrades: {
+        coinBonus,
+        clickBonus,
+        maxMembers
+    }
+}
+*/
+
+function createClan() {
+
+    if (game.clan) {
+        alert("You are already in a clan.");
+        return;
+    }
+
+    const name =
+        document.getElementById("newClanName")
+        .value.trim();
+
+    const tag =
+        document.getElementById("newClanTag")
+        .value.trim()
+        .toUpperCase();
+
+    if (!name) {
+        alert("Enter a clan name.");
+        return;
+    }
+
+    if (!tag) {
+        alert("Enter a clan tag.");
+        return;
+    }
+
+    if (tag.length > 5) {
+        alert("Clan tags can only be 5 characters.");
+        return;
+    }
+
+    game.clan = {
+
+        name: name,
+        tag: tag,
+
+        level: 1,
+        xp: 0,
+        coins: 0,
+
+        members: [
+            {
+                name: "You",
+                role: "Owner",
+                level: getTeam().level
+            }
+        ],
+
+        achievements: [],
+
+        upgrades: {
+            coinBonus: 0,
+            clickBonus: 0,
+            maxMembers: 10
+        }
+
+    };
+
+    saveGame();
+    renderClan();
+    updateUI();
+
+    alert("🛡️ Clan created!");
+}
+
+
+function addClanXP(amount) {
+
+    if (!game.clan) return;
+
+    game.clan.xp += amount;
+
+    const required =
+        game.clan.level * 1000;
+
+    if (game.clan.xp >= required) {
+
+        game.clan.xp -= required;
+        game.clan.level++;
+
+        alert(
+            "🎉 Your clan reached level " +
+            game.clan.level + "!"
+        );
+    }
+
+    checkClanAchievements();
+
+    saveGame();
+    renderClan();
+}
+
+
+function upgradeClan(type) {
+
+    if (!game.clan) return;
+
+    const clan = game.clan;
+
+    let cost =
+        (clan.level + clan.upgrades[type]) * 500;
+
+    if (clan.coins < cost) {
+        alert(
+            "Your clan needs " +
+            cost.toLocaleString() +
+            " clan coins."
+        );
+        return;
+    }
+
+    clan.coins -= cost;
+    clan.upgrades[type]++;
+
+    saveGame();
+    renderClan();
+}
+
+
+function donateToClan() {
+
+    if (!game.clan) return;
+
+    const team = getTeam();
+
+    const amount =
+        Number(
+            prompt(
+                "How many personal coins do you want to donate?"
+            )
+        );
+
+    if (!amount || amount <= 0) return;
+
+    if (team.coins < amount) {
+        alert("You don't have enough coins.");
+        return;
+    }
+
+    team.coins -= amount;
+
+    game.clan.coins += amount;
+
+    addClanXP(Math.floor(amount / 10));
+
+    saveGame();
+    updateUI();
+    renderClan();
+}
+
+
+function leaveClan() {
+
+    if (!game.clan) return;
+
+    if (
+        !confirm(
+            "Are you sure you want to leave your clan?"
+        )
+    ) {
+        return;
+    }
+
+    game.clan = null;
+
+    saveGame();
+    updateUI();
+    renderClan();
+}
+
+
+function deleteClan() {
+
+    if (!game.clan) return;
+
+    if (
+        !confirm(
+            "Delete your clan permanently?"
+        )
+    ) {
+        return;
+    }
+
+    game.clan = null;
+
+    saveGame();
+    updateUI();
+    renderClan();
+}
+
+
+function addFakeMember() {
+
+    if (!game.clan) return;
+
+    const clan = game.clan;
+
+    if (
+        clan.members.length >=
+        10 + clan.upgrades.maxMembers
+    ) {
+        alert("Your clan is full.");
+        return;
+    }
+
+    const names = [
+        "DuckFan",
+        "FrogBoss",
+        "OwlPro",
+        "ClickMaster",
+        "CoinHunter",
+        "MegaClicker",
+        "FeatherKing",
+        "NightOwl",
+        "Froggy",
+        "DuckLord"
+    ];
+
+    const name =
+        names[
+            Math.floor(
+                Math.random() * names.length
+            )
+        ]
+        + Math.floor(Math.random() * 999);
+
+    clan.members.push({
+        name: name,
+        role: "Member",
+        level:
+            Math.floor(Math.random() * 20) + 1
+    });
+
+    addClanXP(100);
+
+    saveGame();
+    renderClan();
+}
+
+
+/* =========================
+   CLAN ACHIEVEMENTS
+========================= */
+
+function checkClanAchievements() {
+
+    if (!game.clan) return;
+
+    const clan = game.clan;
+
+    const achievements = [
+        {
+            id: "level5",
+            name: "🌟 Growing Clan",
+            condition: clan.level >= 5
+        },
+
+        {
+            id: "coins1000",
+            name: "🪙 Coin Bank",
+            condition: clan.coins >= 1000
+        },
+
+        {
+            id: "members5",
+            name: "👥 Teamwork",
+            condition: clan.members.length >= 5
+        },
+
+        {
+            id: "level10",
+            name: "🔥 Powerful Clan",
+            condition: clan.level >= 10
+        }
+    ];
+
+    achievements.forEach(a => {
+
+        if (
+            a.condition &&
+            !clan.achievements.includes(a.id)
+        ) {
+
+            clan.achievements.push(a.id);
+
+        }
+
+    });
+}
+
+
+/* =========================
+   CLAN UI
+========================= */
+
+function renderClan() {
+
+    const container =
+        document.getElementById("clanContent");
+
+    if (!game.clan) {
+
+        container.innerHTML = `
+
+            <div class="notice">
+                🛡️ You are not currently in a clan.
+                Create one below!
+            </div>
+
+            <div class="item">
+
+                <h3>🆕 Create a Clan</h3>
+
+                <input
+                    id="newClanName"
+                    maxlength="30"
+                    placeholder="Clan name"
+                >
+
+                <input
+                    id="newClanTag"
+                    maxlength="5"
+                    placeholder="Clan tag (max 5 characters)"
+                >
+
+                <button
+                    class="primary"
+                    onclick="createClan()">
+                    🛡️ Create Clan
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+    const clan = game.clan;
+
+    const xpNeeded =
+        clan.level * 1000;
+
+    const xpPercent =
+        Math.min(
+            100,
+            (clan.xp / xpNeeded) * 100
+        );
+
+    container.innerHTML = `
+
+        <div class="clan-header">
+
+            <h2>
+                🛡️ ${escapeHTML(clan.name)}
+                [${escapeHTML(clan.tag)}]
+            </h2>
+
+            <p>
+                Clan Level ${clan.level}
+            </p>
+
+            <div class="progress">
+                <div
+                    class="progress-bar"
+                    style="width:${xpPercent}%">
+                </div>
+            </div>
+
+            <small>
+                ${clan.xp.toLocaleString()}
+                /
+                ${xpNeeded.toLocaleString()}
+                XP
+            </small>
+
+            <div class="clan-stats">
+
+                <div class="clan-stat">
+                    👥
+                    <br>
+                    <strong>
+                        ${clan.members.length}
+                    </strong>
+                    <br>
+                    Members
+                </div>
+
+                <div class="clan-stat">
+                    🪙
+                    <br>
+                    <strong>
+                        ${clan.coins.toLocaleString()}
+                    </strong>
+                    <br>
+                    Clan Coins
+                </div>
+
+                <div class="clan-stat">
+                    ⭐
+                    <br>
+                    <strong>
+                        ${clan.level}
+                    </strong>
+                    <br>
+                    Level
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="item">
+
+            <h3>🪙 Clan Bank</h3>
+
+            <p>
+                Donate your personal coins to help
+                level up the clan.
+            </p>
+
+            <button
+                class="primary"
+                onclick="donateToClan()">
+                Donate Coins
+            </button>
+
+        </div>
+
+
+        <div class="item">
+
+            <h3>⬆️ Clan Upgrades</h3>
+
+            <p>
+                💰 Coin Bonus:
+                Level ${clan.upgrades.coinBonus}
+            </p>
+
+            <button
+                class="primary"
+                onclick="upgradeClan('coinBonus')">
+                Upgrade Coin Bonus
+            </button>
+
+            <hr>
+
+            <p>
+                ⚡ Click Bonus:
+                Level ${clan.upgrades.clickBonus}
+            </p>
+
+            <button
+                class="primary"
+                onclick="upgradeClan('clickBonus')">
+                Upgrade Click Bonus
+            </button>
+
+            <hr>
+
+            <p>
+                👥 Extra Member Slots:
+                ${clan.upgrades.maxMembers}
+            </p>
+
+            <button
+                class="primary"
+                onclick="upgradeClan('maxMembers')">
+                Buy Member Slot Upgrade
+            </button>
+
+        </div>
+
+
+        <div class="item">
+
+            <h3>👥 Members</h3>
+
+            ${clan.members.map(member => `
+
+                <div class="item member">
+
+                    <div>
+
+                        <strong>
+                            ${escapeHTML(member.name)}
+                        </strong>
+
+                        <br>
+
+                        <span class="
+                            role-${member.role.toLowerCase()}
+                        ">
+                            ${member.role}
+                        </span>
+
+                    </div>
+
+                    <div>
+                        Level ${member.level}
+                    </div>
+
+                </div>
+
+            `).join("")}
+
+            <button
+                class="secondary"
+                onclick="addFakeMember()">
+                ➕ Add Test Member
+            </button>
+
+        </div>
+
+
+        <div class="item">
+
+            <h3>🏆 Clan Achievements</h3>
+
+            ${renderClanAchievements()}
+
+        </div>
+
+
+        <div class="item">
+
+            <h3>⚙️ Clan Management</h3>
+
+            <button
+                class="danger"
+                onclick="leaveClan()">
+                🚪 Leave Clan
+            </button>
+
+            <br><br>
+
+            <button
+                class="danger"
+                onclick="deleteClan()">
+                🗑️ Delete Clan
+            </button>
+
+        </div>
+    `;
+}
+
+
+function renderClanAchievements() {
+
+    if (!game.clan) return "";
+
+    const clan = game.clan;
+
+    const list = [
+
+        {
+            id: "level5",
+            name: "🌟 Reach Clan Level 5"
+        },
+
+        {
+            id: "coins1000",
+            name: "🪙 Collect 1,000 Clan Coins"
+        },
+
+        {
+            id: "members5",
+            name: "👥 Get 5 Clan Members"
+        },
+
+        {
+            id: "level10",
+            name: "🔥 Reach Clan Level 10"
+        }
+
+    ];
+
+    return list.map(a => {
+
+        const unlocked =
+            clan.achievements.includes(a.id);
+
+        return `
+            <div class="achievement">
+                <span>
+                    ${a.name}
+                </span>
+
+                <span class="${
+                    unlocked
+                    ? "unlocked"
+                    : "locked"
+                }">
+                    ${
+                        unlocked
+                        ? "✅ Unlocked"
+                        : "🔒 Locked"
+                    }
+                </span>
+            </div>
+        `;
+
+    }).join("");
+}
+
+
+/* =========================
+   PANELS
+========================= */
+
+function openPanel(id, button) {
+
+    document
+        .querySelectorAll(".panel")
+        .forEach(panel =>
+            panel.classList.remove("active")
+        );
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab =>
+            tab.classList.remove("active")
+        );
+
+    document
+        .getElementById(id)
+        .classList.add("active");
+
+    button.classList.add("active");
+
+    if (id === "clans") {
+        renderClan();
+    }
+}
+
+
+/* =========================
+   SAVE SYSTEM
+========================= */
+
+function saveGame() {
+
+    localStorage.setItem(
+        "duckFrogOwlSave",
+        JSON.stringify(game)
+    );
+
+    document.getElementById(
+        "saveStatus"
+    ).textContent = "💾 Saved";
+}
+
+
+/*
+Save every 0.5 seconds.
+*/
+
+setInterval(() => {
+    saveGame();
+}, 500);
+
+
+/* =========================
+   AUTO CLICKERS
+========================= */
+
+setInterval(() => {
+
+    const team = getTeam();
+
+    if (team.autoClickers > 0) {
+
+        let bonus =
+            game.clan
+            ? game.clan.upgrades.clickBonus
+            : 0;
+
+        team.coins +=
+            team.autoClickers *
+            (team.clickPower + bonus);
+
+        if (game.clan) {
+            addClanXP(
+                team.autoClickers
+            );
+        }
+
+        updateUI();
+    }
+
+}, 1000);
+
+
+/* =========================
+   UI
+========================= */
+
+function updateUI() {
+
+    const team = getTeam();
+    const info = teamInfo[game.currentTeam];
+
+    document.getElementById(
+        "teamName"
+    ).textContent = info.name;
+
+    document.getElementById(
+        "teamIcon"
+    ).textContent = info.icon;
+
+    document.getElementById(
+        "coins"
+    ).textContent =
+        Math.floor(team.coins)
+        .toLocaleString();
+
+    document.getElementById(
+        "clickPower"
+    ).textContent =
+        team.clickPower
+        .toLocaleString();
+
+    document.getElementById(
+        "level"
+    ).textContent =
+        team.level;
+
+    document.getElementById(
+        "totalClicks"
+    ).textContent =
+        team.totalClicks
+        .toLocaleString();
+
+    document.getElementById(
+        "currentTeam"
+    ).textContent =
+        info.name.replace(" Team","");
+
+    document.getElementById(
+        "currentClan"
+    ).textContent =
+        game.clan
+        ? game.clan.name
+        : "No Clan";
+
+    document.getElementById(
+        "clickButton"
+    ).className =
+        "click-button " +
+        info.className;
+}
+
+
+/* =========================
+   SECURITY / TEXT HELPER
+========================= */
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================
+   START GAME
+========================= */
+
+updateUI();
+renderClan();
+
+</script>
+
+</body>
+</html>
